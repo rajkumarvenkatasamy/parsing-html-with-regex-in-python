@@ -8,6 +8,7 @@ ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
+URL = "https://pypi.org/"
 HTML_FILE = "C:\\Users\\venkara\\Documents\\Personal\\GitHub\\parsing-html-with-regex-in-python\\file.html"
 ALTERED_HTML_FILE = "C:\\Users\\venkara\\Documents\\Personal\\GitHub\\parsing-html-with-regex-in-python\\altered-file.html"
 
@@ -108,12 +109,11 @@ def remove_comments_from_html(input_file):
     os.replace('temp.html', input_file)
 
 
-url = "https://pypi.org/"
-write_html_of_given_url_to_file(url)
-get_all_referenced_urls(url)
-print_projects_count(url)
-get_content_with_empty_tags(url)
-get_commented_lines(url)
+write_html_of_given_url_to_file(URL)
+get_all_referenced_urls(URL)
+print_projects_count(URL)
+get_content_with_empty_tags(URL)
+get_commented_lines(URL)
 filter_empty_tags(HTML_FILE, ALTERED_HTML_FILE)
 remove_comments_from_html(ALTERED_HTML_FILE)
 print("\n ***** Reached End of the Program ***** \n")
