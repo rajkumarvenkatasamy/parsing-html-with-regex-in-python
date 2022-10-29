@@ -12,6 +12,7 @@ HTML_FILE = "C:\\Users\\venkara\\Documents\\Personal\\GitHub\\parsing-html-with-
 ALTERED_HTML_FILE = "C:\\Users\\venkara\\Documents\\Personal\\GitHub\\parsing-html-with-regex-in-python\\altered-file.html"
 EMPTY_TAGS_LIST = ["area", "base", "br", "col", "embed", "hr", "img", "input", "keygen", "link", "meta", "param",
                    "source", "track", "wbr"]
+COMMENT_PATTERN = "<!--"
 
 
 def get_html(input_url: str) -> bytes:
@@ -38,9 +39,8 @@ def get_all_referenced_urls(input_url: str) -> list:
 
 def print_projects_count(input_url: str) -> None:
     html = get_html(input_url)
-    # stats = re.findall(b'<p class="statistics-bar__statistic">\n .*projects', html)
-    stats = re.findall(b'\\d+[","]?\\d+[","]?\\d+\\s+(?i)PROJECTS', html)
-    print("\n ***** Printing all stats ***** \n")
+    stats = re.findall(b'\\d+[","]?\\d+[","]?\\d+\\s+projects', html)
+    print("\n ***** Printing Projects Count ***** \n")
     for stat in stats:
         print(stat.decode())
 
@@ -57,6 +57,16 @@ def get_content_with_empty_tags(input_url: str) -> list:
             print(stat.decode())
             empty_tags_content_list.append(stat.decode())
     return empty_tags_content_list
+
+
+def get_commented_lines(input_url: str):
+    html = get_html(input_url)
+
+    print("\n ***** Commented Lines ***** \n")
+
+    stats = re.findall(COMMENT_PATTERN.encode() + b'.*>', html)
+    for stat in stats:
+        print(stat.decode())
 
 
 def filter_empty_tags(input_file, output_file):
@@ -100,5 +110,7 @@ write_html_of_given_url_to_file(url)
 get_all_referenced_urls(url)
 print_projects_count(url)
 get_content_with_empty_tags(url)
+get_commented_lines(url)
 filter_empty_tags(HTML_FILE, ALTERED_HTML_FILE)
 remove_comments_from_html(ALTERED_HTML_FILE)
+print("\n ***** Reached End of the Program ***** \n")
