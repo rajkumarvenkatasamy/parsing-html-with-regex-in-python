@@ -39,7 +39,7 @@ def get_all_referenced_urls(input_url: str) -> list:
 
 def print_projects_count(input_url: str) -> None:
     html = get_html(input_url)
-    stats = re.findall(b'\\d+[","]?\\d+[","]?\\d+\\s+projects', html)
+    stats = re.findall(b'\\d+,?\\d+,?\\d+\\s+projects', html)
     print("\n ***** Printing Projects Count ***** \n")
     for stat in stats:
         print(stat.decode())
