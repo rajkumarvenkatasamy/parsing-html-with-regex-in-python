@@ -2,7 +2,7 @@ import urllib.request
 
 
 URL = "https://pypi.org/"
-HTML_FILE = "../PyPI-Site-HTML-File/file.html"
+HTML_FILE = "../pypi-site-html-file/file.html"
 
 
 def write_html_of_given_url_to_file(input_url: str):
