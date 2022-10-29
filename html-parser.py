@@ -10,6 +10,9 @@ ctx.verify_mode = ssl.CERT_NONE
 
 HTML_FILE = "C:\\Users\\venkara\\Documents\\Personal\\GitHub\\parsing-html-with-regex-in-python\\file.html"
 ALTERED_HTML_FILE = "C:\\Users\\venkara\\Documents\\Personal\\GitHub\\parsing-html-with-regex-in-python\\altered-file.html"
+
+# Source of Empty tags list or Void elements list :
+# https://developer.mozilla.org/en-US/docs/Glossary/Void_element
 EMPTY_TAGS_LIST = ["area", "base", "br", "col", "embed", "hr", "img", "input", "keygen", "link", "meta", "param",
                    "source", "track", "wbr"]
 COMMENT_PATTERN = "<!--"
