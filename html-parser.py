@@ -1,0 +1,104 @@
+import os
+import shutil
+import re
+import ssl
+import urllib.request
+
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+
+HTML_FILE = "C:\\Users\\venkara\\Documents\\Personal\\GitHub\\parsing-html-with-regex-in-python\\file.html"
+ALTERED_HTML_FILE = "C:\\Users\\venkara\\Documents\\Personal\\GitHub\\parsing-html-with-regex-in-python\\altered-file.html"
+EMPTY_TAGS_LIST = ["area", "base", "br", "col", "embed", "hr", "img", "input", "keygen", "link", "meta", "param",
+                   "source", "track", "wbr"]
+
+
+def get_html(input_url: str) -> bytes:
+    html = urllib.request.urlopen(input_url, context=ctx).read()
+    return html
+
+
+def write_html_of_given_url_to_file(input_url: str):
+    urllib.request.urlretrieve(input_url, HTML_FILE)
+
+
+def get_all_referenced_urls(input_url: str) -> list:
+    links_list = []
+
+    html = get_html(input_url)
+    referenced_urls = re.findall(b'href="(http[s]?://.*?)"', html)
+    print("\n ***** Printing all http(s) URLs ***** \n")
+    for referenced_url in referenced_urls:
+        print(referenced_url.decode())
+        links_list.append(referenced_url.decode())
+
+    return links_list
+
+
+def print_projects_count(input_url: str) -> None:
+    html = get_html(input_url)
+    # stats = re.findall(b'<p class="statistics-bar__statistic">\n .*projects', html)
+    stats = re.findall(b'\\d+[","]?\\d+[","]?\\d+\\s+(?i)PROJECTS', html)
+    print("\n ***** Printing all stats ***** \n")
+    for stat in stats:
+        print(stat.decode())
+
+
+def get_content_with_empty_tags(input_url: str) -> list:
+    empty_tags_content_list = []
+
+    html = get_html(input_url)
+
+    print("\n ***** Empty tags ***** \n")
+    for empty_tag in EMPTY_TAGS_LIST:
+        stats = re.findall(b'<' + empty_tag.encode() + b'.*>', html)
+        for stat in stats:
+            print(stat.decode())
+            empty_tags_content_list.append(stat.decode())
+    return empty_tags_content_list
+
+
+def filter_empty_tags(input_file, output_file):
+    """
+    Accepts two files as input. One will be considered as input and the other will be for writing the output which
+    will store html contents from input file except that of empty tags
+    :param input_file:
+    :param output_file:
+    :return:
+    """
+
+    shutil.copyfile(input_file, output_file)
+    for empty_tag in EMPTY_TAGS_LIST:
+        remove_empty_tag_from_html(output_file, empty_tag)
+
+
+def remove_empty_tag_from_html(input_file, empty_tag_element: str):
+    matched = re.compile('<' + empty_tag_element).search
+    with open(input_file, "r", encoding="utf-8") as file:
+        with open('temp.html', 'w', encoding="utf-8") as output_file:
+            for line in file:
+                if not matched(line):  # save lines that do not match
+                    print(line, end='', file=output_file)  # this goes to filename due to inplace=1
+
+    os.replace('temp.html', input_file)
+
+
+def remove_comments_from_html(input_file):
+    matched = re.compile('<!--').search
+    with open(input_file, "r", encoding="utf-8") as file:
+        with open('temp.html', 'w', encoding="utf-8") as output_file:
+            for line in file:
+                if not matched(line):  # save lines that do not match
+                    print(line, end='', file=output_file)  # this goes to filename due to inplace=1
+
+    os.replace('temp.html', input_file)
+
+
+url = "https://pypi.org/"
+write_html_of_given_url_to_file(url)
+get_all_referenced_urls(url)
+print_projects_count(url)
+get_content_with_empty_tags(url)
+filter_empty_tags(HTML_FILE, ALTERED_HTML_FILE)
+remove_comments_from_html(ALTERED_HTML_FILE)
