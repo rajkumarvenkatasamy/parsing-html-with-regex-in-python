@@ -1,12 +1,8 @@
 import os
 import shutil
 import re
-import ssl
 import urllib.request
 
-ctx = ssl.create_default_context()
-ctx.check_hostname = False
-ctx.verify_mode = ssl.CERT_NONE
 
 URL = "https://pypi.org/"
 HTML_FILE = "C:\\Users\\venkara\\Documents\\Personal\\GitHub\\parsing-html-with-regex-in-python\\file.html"
@@ -20,7 +16,7 @@ COMMENT_PATTERN = "<!--"
 
 
 def get_html(input_url: str) -> bytes:
-    html = urllib.request.urlopen(input_url, context=ctx).read()
+    html = urllib.request.urlopen(input_url).read()
     return html
 
 
