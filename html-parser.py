@@ -5,8 +5,8 @@ import urllib.request
 
 
 URL = "https://pypi.org/"
-HTML_FILE = "C:\\Users\\venkara\\Documents\\Personal\\GitHub\\parsing-html-with-regex-in-python\\file.html"
-ALTERED_HTML_FILE = "C:\\Users\\venkara\\Documents\\Personal\\GitHub\\parsing-html-with-regex-in-python\\altered-file.html"
+HTML_FILE = "file.html"
+ALTERED_HTML_FILE = "altered-file.html"
 
 # Source of Empty tags list or Void elements list :
 # https://developer.mozilla.org/en-US/docs/Glossary/Void_element
